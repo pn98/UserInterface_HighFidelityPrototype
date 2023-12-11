@@ -1,0 +1,253 @@
+<HomePage html>
+    <head>
+        <style>
+            body{
+                background-color: #fff;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            header {
+                color: #fff;
+                background-color: black;
+                display: flex;
+                padding: 10px;
+                justify-content: space-between;
+                align-items: center;
+            }
+            nav ul {
+                margin: 0;
+                display: flex;
+                padding: 0;
+            }
+            nav ul li {
+                margin-right: 10px;
+                list-style: none;
+            }
+            nav ul li a {
+                text-decoration: none;
+                padding: 10px;
+                border-radius: 5px;
+                color: #fff;
+                transition: all 0.3s ease;
+            }
+            nav ul li a:hover {
+                color: black;
+                background-color: #fff;
+            }
+            .container {
+                display: flex;
+            }
+            main {
+                flex: 1;
+                padding: 20px;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                border-radius: 5px;
+                height: 100vh;
+                overflow-y: scroll;
+                max-width: 50%;
+            }
+            aside {
+                flex: 1;
+                padding: 15px;
+                background-color: #f5f5f5;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                height: 100vh;
+                overflow-y: scroll;
+                max-width: 50%;
+            }
+            h1, h2, h3 {
+                margin: 0;
+            }
+            h1 {
+                font-size: 36px;
+            }
+            h2 {
+                text-align: center;
+            }
+            h3 {
+                text-align: center;
+            }
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            #addTaskForm {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0 15px;
+            }
+            
+            input[type="text"],
+            input[type="date"],
+            select {
+                display: block;
+                margin-bottom: 10px;
+                padding: 10px;
+                width: 100%;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            input[type="submit"] {
+                display: block;
+                margin: 0 auto;
+                background-color: #000000;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            input[type="submit"]:hover {
+                background-color: #fff;
+                color: #333;
+            }
+            input[type="time"] {
+                display: block;
+                margin-bottom: 10px;
+                padding: 10px;
+                width: 100%;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            #remindersList {
+                text-align: center;
+                padding: 0 auto;
+                margin: 0;
+                list-style: none;
+            }
+            .task-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+            .task-name {
+                font-weight: bold;
+            }
+            .task-details {
+                font-size: 14px;
+                color: #777;
+                margin-right: 20px;
+            }
+            .delete-button {
+                background-color: #ff3700;
+                color: rgb(255, 255, 255);
+                padding: 5px 10px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 20px;
+            }
+            .delete-button:hover {
+                background-color: #fff;
+                color: #ff1500;
+            }
+            .task-checkbox {
+                margin-right: 10px;
+                transform: scale(1.5);
+            }
+        </style>
+    </head>
+    <body>
+    <header>
+        <h1>Task Manager</h1>
+        <nav>
+        <ul>
+            <li><a href="<HomePage html>.html">Home</a></li>
+            <li><a href="<ThisWeek html>.html">This Week</a></li>
+            <li><a href="<All html>.html">All</a></li>
+        </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <main>
+        <h2>Add a Task</h2>
+        <form id="addTaskForm">
+            <label for="task-name">Task Name:</label>
+            <input type="text" id="task-name" name="task-name" required>
+            <label for="task-date">Due Date:</label>
+            <input type="date" id="task-date" name="task-date" required>
+            <label for="task-time">Due Time:</label>
+            <input type="time" id="task-time" name="task-time" required>
+            <br><br>
+            <input type="submit" value="Add Task">
+        </form>
+        </main>
+        <aside>
+        <h2>Reminders</h2>
+        <h3>Today</h3>
+        <br><br>
+        <ul id="remindersList">
+        </ul>
+        </aside>
+    </div>
+    <script>
+        document.getElementById("addTaskForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        var taskName = document.getElementById("task-name").value;
+        var taskDate = document.getElementById("task-date").value;
+        var taskTime = document.getElementById("task-time").value;
+
+        var currentDate = new Date().toISOString().split('T')[0];
+
+        if (taskDate === currentDate) {
+            var listItem = document.createElement("li");
+            listItem.className = "task-item";
+
+            var taskContainer = document.createElement("div");
+            var detailsContainer = document.createElement("div");
+
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "task-checkbox";
+
+            var taskNameElement = document.createElement("span");
+            taskNameElement.className = "task-name";
+            taskNameElement.textContent = taskName;
+
+            var taskDetailsElement = document.createElement("span");
+            taskDetailsElement.className = "task-details";
+            taskDetailsElement.textContent = "Time: " + taskTime;
+
+            var deleteButtonReminders = document.createElement("button");
+            deleteButtonReminders.className = "delete-button";
+            deleteButtonReminders.textContent = "Remove";
+            deleteButtonReminders.addEventListener("click", function() {
+            listItem.remove();
+            });
+
+            taskContainer.appendChild(checkbox);
+            taskContainer.appendChild(taskNameElement);
+            detailsContainer.appendChild(taskDetailsElement);
+            detailsContainer.appendChild(deleteButtonReminders);
+        
+            listItem.appendChild(taskContainer);
+            listItem.appendChild(detailsContainer);
+
+
+            var remindersList = document.getElementById("remindersList");
+            var existingTasks = Array.from(remindersList.getElementsByClassName("task-item"));
+            existingTasks.push(listItem);
+
+            existingTasks.sort(function(a, b) {
+            var timeA = a.getElementsByClassName("task-details")[0].textContent.split(":")[1].trim();
+            var timeB = b.getElementsByClassName("task-details")[0].textContent.split(":")[1].trim();
+            return new Date("1970/01/01 " + timeA) - new Date("1970/01/01 " + timeB);
+            });
+
+            remindersList.innerHTML = "";
+
+            existingTasks.forEach(function(task) {
+            remindersList.appendChild(task);
+            });
+        }
+
+        document.getElementById("addTaskForm").reset();
+        });
+    </script>
+    </body>
+</html>

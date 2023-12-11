@@ -1,0 +1,237 @@
+<All html>
+    <head>
+        <title>All Tasks</title>
+        <style>
+            body{
+                background-color: #fff;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .delete-button {
+                background-color: red;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            header {
+                color: #fff;
+                background-color: black;
+                display: flex;
+                padding: 10px;
+                justify-content: space-between;
+                align-items: center;
+            }
+            nav ul {
+                margin: 0;
+                display: flex;
+                padding: 0;
+            }
+            nav ul li {
+                margin-right: 10px;
+                list-style: none;
+            }
+            nav ul li a {
+                text-decoration: none;
+                padding: 10px;
+                border-radius: 5px;
+                color: #fff;
+                transition: all 0.3s ease;
+            }
+            nav ul li a:hover {
+                color: black;
+                background-color: #fff;
+            }
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                height: 100vh;
+            }
+
+            main {
+                padding: 20px;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                border-radius: 5px;
+                overflow-y: scroll;
+                max-width: 1600px;
+                width: 100%;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: row;
+            }
+
+            .all-tasks {
+                flex: 1;
+                margin-right: 20px;
+            }
+
+            h1, h2, h3 {
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                text-align: center;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .add-task-form {
+                flex: 1;
+            }
+
+            .add-task-form label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .add-task-form input[type="text"],
+            .add-task-form input[type="date"],
+            .add-task-form select,
+            .add-task-form input[type="time"] {
+                display: block;
+                margin-bottom: 10px;
+                padding: 10px;
+                width: 100%;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .add-task-form input[type="submit"] {
+                display: block;
+                margin: 0 auto;
+                background-color: #000000;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .add-task-form input[type="submit"]:hover {
+                background-color: #fff;
+                color: #333;
+            }
+
+            .all-tasks table {
+                margin-top: 20px;
+            }
+
+            .all-tasks th,
+            .all-tasks td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Task Manager</h1>
+            <nav>
+                <ul>
+                    <li><a href="<HomePage html>.html">Home</a></li>
+                    <li><a href="<ThisWeek html>.html">This Week</a></li>
+                    <li><a href="<All html>.html">All</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="container">
+            <main>
+                <div class="all-tasks">
+                    <h2>All Tasks</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th> </th>
+                                <th>Task Name</th>
+                                <th>Due Date</th>
+                                <th>Due Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskList">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="add-task-form">
+                    <h2>Add a Task</h2>
+                    <form id="addTaskForm">
+                        <label for="task-name">Task Name:</label>
+                        <input type="text" id="task-name" name="task-name" required>
+                        <label for="task-date">Due Date:</label>
+                        <input type="date" id="task-date" name="task-date" required>
+                        <label for="task-time">Due Time:</label>
+                        <input type="time" id="task-time" name="task-time" required>
+                        <br><br>
+                        <input type="submit" value="Add Task">
+                    </form>
+                </div>
+            </main>
+        </div>
+        <script>
+            document.getElementById("addTaskForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+        
+                var taskName = document.getElementById("task-name").value;
+                var taskDate = document.getElementById("task-date").value;
+                var taskTime = document.getElementById("task-time").value;
+        
+                var currentDate = new Date().toISOString().split('T')[0];
+        
+                var tableRow = document.createElement("tr");
+        
+                var checkboxCell = document.createElement("td");
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkboxCell.appendChild(checkbox);
+        
+                var taskNameCell = document.createElement("td");
+                taskNameCell.textContent = taskName;
+        
+                var taskDateCell = document.createElement("td");
+                taskDateCell.textContent = taskDate;
+        
+                var taskTimeCell = document.createElement("td");
+                taskTimeCell.textContent = taskTime;
+        
+                var actionCell = document.createElement("td");
+                var deleteButton = document.createElement("button");
+                deleteButton.className = "delete-button";
+                deleteButton.textContent = "Remove";
+                deleteButton.addEventListener("click", function() {
+                    tableRow.remove();
+                });
+        
+                actionCell.appendChild(deleteButton);
+        
+                tableRow.appendChild(checkboxCell);
+                tableRow.appendChild(taskNameCell);
+                tableRow.appendChild(taskDateCell);
+                tableRow.appendChild(taskTimeCell);
+                tableRow.appendChild(actionCell);
+        
+                var taskList = document.getElementById("taskList");
+                taskList.appendChild(tableRow);
+        
+                document.getElementById("addTaskForm").reset();
+            });
+        </script>        
+    </body>
+ </html>
+
